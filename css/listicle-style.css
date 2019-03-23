@@ -93,6 +93,11 @@ hr {
 
 .link {
     color: #42b4d6;
+    text-decoration: none;
+}
+
+.link:hover {
+    text-decoration: underline;
 }
 
 .text {
