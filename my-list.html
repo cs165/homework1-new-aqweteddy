@@ -1,12 +1,267 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <link rel="stylesheet" href="css/my-list-style.css"/>
-  </head>
-  <body>
-  <!-- TODO(you): Create your own list-based article! It can look however you'd like. -->
-  </body>
-</html>
 
+<head>
+  <meta charset="utf-8">
+  <title>Custom</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <link rel="stylesheet" href="css/my-list-style.css" />
+</head>
+
+<body>
+  <div class="img_title" data-aos="zoom-in">
+    <img class="title_pic" src="images/header.jpg">
+    <div class="title_word">Some Code Jam Code</div>
+  </div>
+  <div class="articles">
+    <div class="article" data-aos="fade-up">
+      <h2 class="heading">A. Saving The Universe Again</h2>
+      <hr />
+      <h3 id="">題目描述</h3>
+      <ul>
+        <li><a class="link"
+            href="https://codingcompetitions.withgoogle.com/codejam/round/00000000000000cb/0000000000007966">URL</a>
+        </li>
+        <li>給一串只有 C 和 S 的字串和一個數字 K，C 表示累積能量 * 2，S 表示攻擊，輸出 swap 最少次數，使得每次攻擊所射出能量 &lt;=
+          K，若無法則輸出<strong>IMPOSSIBLE</strong></li>
+        <li>注意：
+          <ul>
+            <li>兩相鄰元素才能 swap</li>
+            <li>C 是累積的，例如 SCCSS 所輸出的總能量是： 1 + 4 + 4 = 9</li>
+          </ul>
+        </li>
+      </ul>
+      <h3 id="-1">解題思路</h3>
+      <ul>
+        <li>考慮長度只有 2 的情況下，要使輸出能量降低的交換只有 <em>CS</em> -> <em>SC</em> 這個組合</li>
+        <li>考慮長度為 N，則要降低輸出，就要盡量把 C 往後移</li>
+        <li>如同 Bubble sort 一樣，重複檢查 A[i] = C、A[i+1] = S 的情況，SWAP 它，次數 + 1
+          <ul>
+            <li>考慮要從後往前或從前往後：</li>
+            <li>要盡量把 C 往後擺，保證 C 後面沒有 S ＝> 由後往前</li>
+            <li>由前往後所造成的能量減少較少，因為交換後 C 後面不保證沒有 S</li>
+            <li>注意每次交換後，要將迭代器初始至尾的位置</li>
+          </ul>
+        </li>
+        <li>若執行為 N ^ 2 次仍沒有結果，則為不可能(因為最左邊的 C 右邊已沒有 S)</li>
+      </ul>
+      <h3 id="code">Code</h3>
+      <pre data-aos="zoom-in"><code>#include &lt;bits/stdc++.h&gt;
+// AC
+using namespace std;
+typedef long long ll;
+ll shield;
+string attack;
+
+ll calc(const string&amp; in)
+{
+    ll sum = 0, step = 1;
+    for(const char&amp; c : in){
+        if(c == 'C')
+            step *= 2;
+        else
+            sum += step;
+    }
+    return sum;
+}
+
+void solve()
+{
+    int step = 0;
+    if(calc(attack) &lt;= shield){
+        cout &lt;&lt; 0 &lt;&lt; '\n';
+        return;
+    }
+    for(int i=0; i&lt;attack.size(); ++i){
+        for(int j=attack.size()-1; j&gt;= 1; --j){
+            if(attack[j-1] == 'C' &amp;&amp; attack[j] == 'S'){
+                ++ step;
+                swap(attack[j-1], attack[j]);
+                if(calc(attack) &lt;= shield){
+                    cout &lt;&lt; step &lt;&lt; '\n';
+                    return;
+                }
+                j = attack.size();
+            }
+        }
+    }
+    cout &lt;&lt; "IMPOSSIBLE\n";
+}
+
+int main()
+{
+    int nc;
+    cin &gt;&gt; nc;
+    for(int n=1; n&lt;=nc; ++n){
+        cin &gt;&gt; shield &gt;&gt; attack;
+        cout &lt;&lt;"Case #" &lt;&lt; n &lt;&lt; ": ";
+        solve();
+    }
+    return 0;
+}
+</code></pre>
+    </div>
+    <div class="article" data-aos="fade-up">
+      <h2 class="heading">B. Trouble Sort</h2>
+      <hr>
+      <h3 id="-2">題目描述</h3>
+      <ul>
+        <li>
+          <p><a class="link"
+              href="https://codingcompetitions.withgoogle.com/codejam/round/00000000000000cb/00000000000079cb">URL</a>
+          </p>
+        </li>
+        <li>
+          <p>定義一個錯誤的排序法，問其可否輸出正確的排序結果，若可以，輸出 <em>OK</em> ，不可以，輸出出現錯誤的處的 index</p>
+        </li>
+        <li>
+          <p>排序法如下：</p>
+          <p>
+            <ul>
+              <li>抓取 L 中 [i, i+3) 的 element</li>
+          </p>
+          <p>
+        <li>若 L[i] > L[i + 2]，則 Swap(L[i], L[i + 2])</li>
+        </p>
+        <p>
+          <li>其他則繼續執行下一組 [i+1, i+4)</li>
+      </ul>
+      </li>
+      </ul>
+      </p>
+      <h3 id="-3">解題思路</h3>
+      <ul>
+        <li>觀察該排序法，可發現在 L 中，任一元素 L[i] 只會跟 L[i + 2] 比較</li>
+        <li>若將 L 分為 L[0: -1 :2] 和 L[1: -1 :2] 的兩個子陣列，不論該演算法怎麼交換，兩子陣列的元素都不會交換到</li>
+        <li>因此該演算法可以當作：</li>
+      </ul>
+      <ol>
+        <li>分別 sort L[0: -1 :2] 和 L[1: -1 :2]</li>
+        <li>再交叉合併</li>
+        <li>得到和執行該演算法相同結果</li>
+      </ol>
+      <ul>
+        <li>如此一來 O(N^2) -> O(N log N)</li>
+      </ul>
+      <h3 id="code-1">Code</h3>
+      <pre data-aos="zoom-in"><code>def main():
+    N = int(input())
+    inp = list(map(int, input().split(' ')))
+    sub_a = sorted(inp[0::2])
+    sub_b = sorted(inp[1::2])
+
+    for i in range(len(inp)):
+        if i % 2 == 0:
+            inp[i] = sub_a[int(i / 2)]
+        else:
+            inp[i] = sub_b[int(i / 2)]
+    for i in range(1, len(inp)):
+        if inp[i - 1] &gt; inp[i]:
+            print(i - 1)
+            return
+    print('OK')
+
+if __name__ == '__main__':
+    NC = int(input())
+    for i in range(1, NC+1):
+        print('Case #{}: '.format(i), end='')
+        main()
+</code></pre>
+    </div>
+    <div class="article" data-aos="fade-up">
+      <h2 class="heading">C. A Whole New World</h2>
+      <hr>
+      <h3 id="">題目描述</h3>
+      <ul>
+        <li><a class="link" href="https://codingcompetitions.withgoogle.com/codejam/round/0000000000007765/000000000003e064">URL</a>
+        </li>
+        <li>給定一個字元矩陣 \(N \times L\)，每個 column 選一個字母組成一個新單字，但不和 row 成的單字重複，輸出任意一個單字，若無輸出“-”</li>
+      </ul>
+      <h3 id="-1">解題思路</h3>
+      <ul>
+        <li>暴力 + 剪枝</li>
+        <li>紀錄每個 column</li>
+        <li>遞迴拼出所有可能性</li>
+        <li>剪枝：
+          <ul>
+            <li>開一個陣列紀錄 column[k] 下 A-Z 是否使用過</li>
+            <li>若沒有：遞迴，並將 flag 設為 1</li>
+            <li>若有：跳過</li>
+          </ul>
+        </li>
+        <li>如此一來，每從一個 Column 決定一個字元最多只會呼叫 26 次遞迴</li>
+      </ul>
+      <h3 id="code">Code</h3>
+      <pre data-aos="zoom-in"><code class="c++ language-c++">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+set&lt;string&gt; exist;
+vector&lt;string&gt; dic;
+int L, N;
+bool fl;
+
+void generate_word(string str, int k)
+{
+    if(fl) return;
+    if(k == L){
+        if(find(exist.begin(), exist.end(), str) == exist.end()){
+            cout &lt;&lt; str &lt;&lt; '\n';
+            fl = 1;
+        }
+        return;
+    }
+    bool used[30];
+    for(int i=0; i&lt;30; ++i)
+        used[i] = 0;
+    for(int i=0 ;i&lt;N; ++i){
+       if(!used[dic[k][i] - 'A']){
+            generate_word(str + dic[k][i], k + 1);
+            used[dic[k][i] - 'A'] = 1;
+       }
+    }
+}
+
+void solve()
+{
+    generate_word("", 0);
+    if(!fl) cout &lt;&lt; "-\n";
+}
+
+int main()
+{
+    int ncase;
+
+    cin &gt;&gt; ncase;
+    for (int n = 0; n &lt; ncase; ++n) {
+        cin &gt;&gt; N &gt;&gt; L;
+        string in;
+        dic.clear();
+        exist.clear();
+        dic.resize(L);
+        fl = 0;
+        for(int i=0; i&lt;N; ++i){
+            cin &gt;&gt; in;
+            exist.insert(in);
+            for(int j=0; j&lt;in.size(); ++j){
+                dic[j] += in[j];
+            }
+        }
+        cout &lt;&lt; "Case #" &lt;&lt; n + 1 &lt;&lt; ": ";
+        solve();
+    }
+    return 0;
+}
+</code></pre>
+    </div>
+  </div>
+</body>
+<script>
+  hljs.initHighlightingOnLoad();
+  AOS.init();
+</script>
+
+</html>

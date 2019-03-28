@@ -1,22 +1,18 @@
-/**
- TODO(you): Write the CSS necessary to complete HW1!
-*/
+/* Set body Margin, border and Padding */
 body {
     padding:0;
     border:0;
     margin:0;
 }
 
-br {
-    line-height: 20px;
-}
-
+/* horizontal line */
 hr {
     border:0;
     background-color: #e6e6e6;
     height: 2px;
 }
 
+/* header image */
 
 .img_title {
     position: relative;
@@ -26,6 +22,8 @@ hr {
     background-size: cover;
     align-items: center;
 }
+
+/* header image text */
 
 .title_word {
     max-width: 780px;
@@ -37,6 +35,8 @@ hr {
     text-align: center;
 }
 
+
+/* Profile */
 .profile {
     display: flex;
     width: 100%;
@@ -45,9 +45,9 @@ hr {
     flex-direction: column;
     font-family: 'Source Sans Pro', sans-serif;
     color: rgb(51, 51, 51);
-
 }
 
+/* profile image */
 .profile_img {
     border: 1px, white;
     margin-top: -50px;
@@ -55,35 +55,46 @@ hr {
     z-index: 1;
 }
 
+/* author */
 .author {
     font-size: 18px;
     font-weight: bold;
     line-height: 24px;
 }
 
+/* update date */
 .update_date {
-    font-style: italic;
+    font-style: italic; 
     font-size: 18px;
     line-height: 24px;
     padding-bottom: 10px;
 }
+
+/* aticle group */
 .articles {
+    /* center and set width to 66.7 */
     margin: auto;
     width: 66.7%;
 }
 
+/* an article */
 .article {
+    /* set blank to top and bottom */
+    /* between an article and an article: 120px */
     padding-top: 60px;
     padding-bottom: 60px;
 }
 
+/* list of number */
 .number {
+    /* set position left 40px. */
     margin-left: -80px;
     padding-right: 40px;
     font-size: 36px;
     color: rgb(0, 0, 0, 0.25);
 }
 
+/* article heading */
 .heading {
     font-family: 'Roboto Slab', serif;
     font-size: 36px;
@@ -91,29 +102,35 @@ hr {
     color: rgb(51, 51, 51);
 }
 
+/* address (link) */
 .link {
+    /* set to block element */
+    display: block;
     color: #42b4d6;
     text-decoration: none;
 }
 
+/* when hover */
 .link:hover {
     text-decoration: underline;
 }
 
+/* article text */
 .text {
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 18px;
     line-height: 32px;
     margin-top: 20px;
-    margin-bottom: 20px;
     color: rgb(51, 51, 51);
 }
 
+/* recommendation text */
 .recommendation {
     margin-top: 20px;
     padding-bottom: 20px;
 }
 
+/* image */
 .img_text {
     width: 100%;
 }
